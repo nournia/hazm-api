@@ -1,1 +1,1 @@
-wget http://dl.dropboxusercontent.com/u/90405495/resources.zip && unzip resources.zip -d $OPENSHIFT_DATA_DIR
+cd $OPENSHIFT_DATA_DIR && wget http://dl.dropboxusercontent.com/u/90405495/resources.zip && unzip resources.zip -d $OPENSHIFT_DATA_DIR
