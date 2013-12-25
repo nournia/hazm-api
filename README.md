@@ -1,3 +1,4 @@
-The OpenShift `python` cartridge documentation can be found at:
+Hazm API Server
+===============
 
-https://github.com/openshift/origin-server/tree/master/cartridges/openshift-origin-cartridge-python/README.md
+Hosted [hazm](https://github.com/sobhe/hazm) package that is used in its demo page.
