@@ -11,6 +11,8 @@ setup(name='hazm-api',
 		'Jinja2==2.7.1',
 		'Werkzeug==0.9.4',
 		'gunicorn==18.0',
-		'https://github.com/sobhe/hazm/archive/master.zip'
 	],
+	dependency_links=[
+		'https://github.com/sobhe/hazm/archive/master.zip'
+	]
 )
