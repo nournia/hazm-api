@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='hazm-api',
-	version='0.1',
+	version='0.2',
 	description='OpenShift App',
 	author='Alireza Nourian',
 	author_email='example@example.com',
@@ -11,6 +11,6 @@ setup(name='hazm-api',
 		'Jinja2==2.7.1',
 		'Werkzeug==0.9.4',
 		'gunicorn==18.0',
-		'hazm==0.1'
+		'https://github.com/sobhe/hazm/archive/master.zip'
 	],
 )
