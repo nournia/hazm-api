@@ -10,7 +10,7 @@ app = Flask(__name__)
 normalizer  = Normalizer()
 lemmatizer = Lemmatizer()
 tagger = POSTagger(path_to_model=os.path.join(resources, 'persian.tagger'), path_to_jar=os.path.join(resources, 'stanford-postagger.jar'))
-parser = DependencyParser(tagger=tagger, working_dir=resources)
+parser = DependencyParser(lemmatizer=lemmatizer, tagger=tagger, working_dir=resources)
 
 
 @app.route('/api/normalize', methods = ['POST'])
@@ -35,7 +35,7 @@ def tag():
 		abort(400)
 	tokenized_text = json.loads(request.form['tokenized_text'])
 
-	return json.dumps(tagger.batch_tag(tokenized_text), ensure_ascii=False)
+	return json.dumps(tagger.tag_sents(tokenized_text), ensure_ascii=False)
 
 
 @app.route('/api/lemmatize', methods = ['POST'])
@@ -53,7 +53,7 @@ def parse():
 		abort(400)
 	tagged_text = json.loads(request.form['tagged_text'])
 
-	return json.dumps([dependency_graph.to_conll(10) for dependency_graph in parser.tagged_batch_parse(tagged_text)], ensure_ascii=False)
+	return json.dumps([dependency_graph.to_conll(10) for dependency_graph in parser.tagged_parse_sents(tagged_text)], ensure_ascii=False)
 
 
 @app.route('/')
