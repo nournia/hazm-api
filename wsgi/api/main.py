@@ -42,11 +42,15 @@ def tag():
 
 @app.route('/api/lemmatize', methods = ['POST'])
 def lemmatize():
-	if not 'tagged_text' in request.form:
-		abort(400)
-	tagged_text = json.loads(request.form['tagged_text'])
+	if 'tagged_text' in request.form:
+		tagged_text = json.loads(request.form['tagged_text'])
+		return json.dumps([[lemmatizer.lemmatize(word, tag) for word, tag in sentence] for sentence in tagged_text], ensure_ascii=False)
 
-	return json.dumps([[lemmatizer.lemmatize(word, tag) for word, tag in sentence] for sentence in tagged_text], ensure_ascii=False)
+	if 'tokenized_text' in request.form:
+		tokenized_text = json.loads(request.form['tokenized_text'])
+		return json.dumps([[lemmatizer.lemmatize(word) for word in sentence] for sentence in tokenized_text], ensure_ascii=False)
+
+	abort(400)
 
 
 @app.route('/api/parse', methods = ['POST'])
