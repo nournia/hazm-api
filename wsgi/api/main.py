@@ -2,11 +2,13 @@
 from __future__ import unicode_literals
 import os, json
 from flask import Flask, request, abort
-from hazm import sent_tokenize, word_tokenize, Normalizer, Lemmatizer, POSTagger, DependencyParser
+from hazm import *
+
+app = Flask(__name__)
+app.config['PROPAGATE_EXCEPTIONS'] = True
 
 resources = os.environ['OPENSHIFT_DATA_DIR']
 
-app = Flask(__name__)
 normalizer  = Normalizer()
 lemmatizer = Lemmatizer()
 tagger = POSTagger(path_to_model=os.path.join(resources, 'persian.tagger'), path_to_jar=os.path.join(resources, 'stanford-postagger.jar'))
