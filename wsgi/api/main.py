@@ -9,38 +9,38 @@ app.config['PROPAGATE_EXCEPTIONS'] = True
 
 resources = os.environ['OPENSHIFT_DATA_DIR']
 
-normalizer  = Normalizer()
+normalizer = Normalizer()
 lemmatizer = Lemmatizer()
 tagger = POSTagger(path_to_model=os.path.join(resources, 'persian.tagger'), path_to_jar=os.path.join(resources, 'stanford-postagger.jar'))
 parser = DependencyParser(lemmatizer=lemmatizer, tagger=tagger, working_dir=resources)
 
 
-@app.route('/api/normalize', methods = ['POST'])
+@app.route('/api/normalize', methods=['POST'])
 def normalize():
-	if not 'text' in request.form:
+	if 'text' not in request.form:
 		abort(400)
 
 	return normalizer.normalize(request.form['text'])
 
 
-@app.route('/api/tokenize', methods = ['POST'])
+@app.route('/api/tokenize', methods=['POST'])
 def tokenize():
-	if not 'normalized_text' in request.form:
+	if 'normalized_text' not in request.form:
 		abort(400)
 
 	return json.dumps(map(word_tokenize, sent_tokenize(request.form['normalized_text'])), ensure_ascii=False)
 
 
-@app.route('/api/tag', methods = ['POST'])
+@app.route('/api/tag', methods=['POST'])
 def tag():
-	if not 'tokenized_text' in request.form:
+	if 'tokenized_text' not in request.form:
 		abort(400)
 	tokenized_text = json.loads(request.form['tokenized_text'])
 
 	return json.dumps(tagger.tag_sents(tokenized_text), ensure_ascii=False)
 
 
-@app.route('/api/lemmatize', methods = ['POST'])
+@app.route('/api/lemmatize', methods=['POST'])
 def lemmatize():
 	if 'tagged_text' in request.form:
 		tagged_text = json.loads(request.form['tagged_text'])
@@ -53,9 +53,9 @@ def lemmatize():
 	abort(400)
 
 
-@app.route('/api/parse', methods = ['POST'])
+@app.route('/api/parse', methods=['POST'])
 def parse():
-	if not 'tagged_text' in request.form:
+	if 'tagged_text' not in request.form:
 		abort(400)
 	tagged_text = json.loads(request.form['tagged_text'])
 

@@ -9,6 +9,6 @@ setup(name='hazm-api',
 	url='http://www.sobhe.ir/hazm/',
 	install_requires=[
 		'Flask==0.10.1',
-		'hazm==0.4',
+		'hazm==0.5',
 	]
 )
