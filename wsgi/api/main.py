@@ -11,7 +11,7 @@ resources = os.environ['OPENSHIFT_DATA_DIR']
 
 normalizer = Normalizer()
 lemmatizer = Lemmatizer()
-tagger = POSTagger(model=os.path.join(resources, 'postagger.model'))
+tagger = StanfordPOSTagger(path_to_model=os.path.join(resources, 'persian.tagger'), path_to_jar=os.path.join(resources, 'stanford-postagger.jar'))
 parser = DependencyParser(lemmatizer=lemmatizer, tagger=tagger, working_dir=resources)
 
 
