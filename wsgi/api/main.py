@@ -12,6 +12,7 @@ resources = os.environ['OPENSHIFT_DATA_DIR']
 normalizer = Normalizer()
 lemmatizer = Lemmatizer()
 tagger = StanfordPOSTagger(path_to_model=os.path.join(resources, 'persian.tagger'), path_to_jar=os.path.join(resources, 'stanford-postagger.jar'))
+chunker = Chunker(model=os.path.join(resources, 'chunker.model'))
 parser = DependencyParser(lemmatizer=lemmatizer, tagger=tagger, working_dir=resources)
 
 
@@ -51,6 +52,15 @@ def lemmatize():
 		return json.dumps([[lemmatizer.lemmatize(word) for word in sentence] for sentence in tokenized_text], ensure_ascii=False)
 
 	abort(400)
+
+
+@app.route('/api/chunk', methods=['POST'])
+def chunk():
+	if 'tagged_text' not in request.form:
+		abort(400)
+	tagged_text = json.loads(request.form['tagged_text'])
+
+	return json.dumps(list(map(tree2brackets, chunker.parse_sents(tagged_text))), ensure_ascii=False)
 
 
 @app.route('/api/parse', methods=['POST'])
