@@ -59,6 +59,7 @@ def chunk():
 	if 'tagged_text' not in request.form:
 		abort(400)
 	tagged_text = json.loads(request.form['tagged_text'])
+	tagged_text = [map(tuple, sent) for sent in tagged_text]
 
 	return json.dumps(list(map(tree2brackets, chunker.parse_sents(tagged_text))), ensure_ascii=False)
 
