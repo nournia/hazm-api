@@ -70,7 +70,7 @@ def parse():
 		abort(400)
 	tagged_text = json.loads(request.form['tagged_text'])
 
-	return json.dumps([dependency_graph.to_conll(10) for dependency_graph in parser.tagged_parse_sents(tagged_text)], ensure_ascii=False)
+	return json.dumps([dependency_graph.to_conll(10) for dependency_graph in parser.parse_tagged_sents(tagged_text)], ensure_ascii=False)
 
 
 @application.after_request
