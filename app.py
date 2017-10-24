@@ -73,7 +73,7 @@ def parse():
 	return json.dumps([dependency_graph.to_conll(10) for dependency_graph in parser.tagged_parse_sents(tagged_text)], ensure_ascii=False)
 
 
-@app.after_request
+@application.after_request
 def after_request(response):
 	response.headers.add('Access-Control-Allow-Origin', '*')
 	response.headers.add('Access-Control-Allow-Headers', 'origin, x-requested-with, content-type')
