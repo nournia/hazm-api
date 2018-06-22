@@ -11,7 +11,7 @@ application.config['PROPAGATE_EXCEPTIONS'] = True
 
 resources = os.environ.get('OPENSHIFT_DATA_DIR', 'resources')
 
-normalizer, lemmatizer, tagger, chunker, parser = None, None, None, None, None
+normalizer, cleaner, lemmatizer, tagger, chunker, parser = None, None, None, None, None, None
 
 
 def get_normalizer():
@@ -19,6 +19,13 @@ def get_normalizer():
 	if not normalizer:
 		normalizer = Normalizer()
 	return normalizer
+
+
+def get_cleaner():
+	global cleaner
+	if not cleaner:
+		cleaner = TextCleaner(language_model=AzBarChars(os.path.join(resources, 'chars.klm')))
+	return cleaner
 
 
 def get_lemmatizer():
@@ -49,13 +56,6 @@ def get_parser():
 	return parser
 
 
-def get_cleaner():
-	global cleaner
-	if not cleaner:
-		cleaner = TextCleaner(language_model=AzBarChars(os.path.join(resources, 'chars.klm')))
-	return cleaner
-
-
 @application.route('/api/normalize', methods=['POST'])
 def normalize():
 	if 'text' not in request.form:
@@ -75,10 +75,11 @@ def correct():
 		return get_normalizer().normalize(request.form['text'])
 
 	if mode == 'cleaner':
-		return get_cleaner().normalize(request.form['text'])
+		return get_cleaner().clean_text(request.form['text'])
 
 	if mode == 'spellchecker':
-		return get_cleaner().normalize(request.form['text'])
+		# todo: spellcheck
+		return request.form['text']
 
 	return request.form['text']
 
