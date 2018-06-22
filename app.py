@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 import os, json
 from flask import Flask, request, abort
 from hazm import *
+from azbar import AzBarChars, TextCleaner
+
 
 application = Flask(__name__)
 application.config['PROPAGATE_EXCEPTIONS'] = True
@@ -47,12 +49,38 @@ def get_parser():
 	return parser
 
 
+def get_cleaner():
+	global cleaner
+	if not cleaner:
+		cleaner = TextCleaner(language_model=AzBarChars(os.path.join(resources, 'chars.klm')))
+	return cleaner
+
+
 @application.route('/api/normalize', methods=['POST'])
 def normalize():
 	if 'text' not in request.form:
 		abort(400)
 
 	return get_normalizer().normalize(request.form['text'])
+
+
+@application.route('/api/correct', methods=['POST'])
+def correct():
+	if 'text' not in request.form:
+		abort(400)
+
+	mode = request.form.get('mode', '')
+
+	if mode == 'normalizer':
+		return get_normalizer().normalize(request.form['text'])
+
+	if mode == 'cleaner':
+		return get_cleaner().normalize(request.form['text'])
+
+	if mode == 'spellchecker':
+		return get_cleaner().normalize(request.form['text'])
+
+	return request.form['text']
 
 
 @application.route('/api/tokenize', methods=['POST'])

@@ -1,3 +1,4 @@
 Flask==0.12.2
-hazm==0.5.2
+hazm==0.5.3
+azbar==1.0.0
 gunicorn==19.7.1
