@@ -1,4 +1,4 @@
-flask==1.1.1
+flask==2.3.2
 hazm==0.7.0
 azbar==1.3.0
 gunicorn==20.0.4
